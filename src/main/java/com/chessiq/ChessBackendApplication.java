@@ -8,9 +8,9 @@ import org.springframework.boot.autoconfigure.domain.EntityScan;
 @SpringBootApplication(scanBasePackages = "com.chessiq")
 @EnableJpaRepositories(basePackages = "com.chessiq.repository")
 @EntityScan(basePackages = "com.chessiq.model")
-public class ChessiqApplication {
+public class ChessBackendApplication {
 
     public static void main(String[] args) {
-        SpringApplication.run(ChessiqApplication.class, args);
+        SpringApplication.run(ChessBackendApplication.class, args);
     }
 }
