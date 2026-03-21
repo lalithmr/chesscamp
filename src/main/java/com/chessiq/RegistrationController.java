@@ -11,7 +11,7 @@ import java.util.Map;
 @CrossOrigin(origins = "*") // allow frontend (change later to your domain)
 public class RegistrationController {
 
-```
+
 // ✅ Test endpoint
 @GetMapping("/test")
 public String test() {
@@ -56,6 +56,6 @@ public ResponseEntity<?> registerUser(@RequestBody Map<String, Object> user) {
 
     return ResponseEntity.ok(response);
 }
-```
+
 
 }
