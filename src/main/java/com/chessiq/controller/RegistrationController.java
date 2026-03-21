@@ -1,60 +1,58 @@
 package com.chessiq.controller;
 
+import com.chessiq.model.Registration;
+import com.chessiq.repository.RegistrationRepository;
+
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.List;
 
 @RestController
 @RequestMapping("/api")
-@CrossOrigin(origins = "*") // allow frontend (change later to your domain)
+@CrossOrigin(origins = "*") // 🔥 allow frontend
 public class RegistrationController {
 
 
-// ✅ Test endpoint
+private final RegistrationRepository repository;
+
+// ✅ Constructor Injection
+public RegistrationController(RegistrationRepository repository) {
+    this.repository = repository;
+}
+
+// ✅ Test API
 @GetMapping("/test")
 public String test() {
     return "Backend working 🚀";
 }
 
-// ✅ Registration endpoint (matches your frontend form)
+// ✅ SAVE registration (called from frontend form)
 @PostMapping("/register")
-public ResponseEntity<?> registerUser(@RequestBody Map<String, Object> user) {
+public ResponseEntity<?> registerUser(@RequestBody Registration reg) {
 
-    String studentName = (String) user.get("studentName");
-    Integer age = user.get("age") != null ? (Integer) user.get("age") : null;
-    String parentName = (String) user.get("parentName");
-    String phone = (String) user.get("phone");
-    String email = (String) user.get("email");
-    String level = (String) user.get("level");
-    String batch = (String) user.get("batch");
-    String hasChessSet = (String) user.get("hasChessSet");
-    String needsPremiumChessSet = (String) user.get("needsPremiumChessSet");
+    repository.save(reg);
 
-    // 🔍 Validation
-    if (studentName == null || email == null) {
-        return ResponseEntity.badRequest().body("Missing required fields");
+    return ResponseEntity.ok("Registration saved successfully 🚀");
+}
+
+// ✅ GET all registrations (for admin dashboard)
+@GetMapping("/registrations")
+public List<Registration> getAllRegistrations() {
+    return repository.findAll();
+}
+
+// ✅ DELETE registration (for admin dashboard)
+@DeleteMapping("/registrations/{id}")
+public ResponseEntity<?> deleteRegistration(@PathVariable Long id) {
+
+    if (!repository.existsById(id)) {
+        return ResponseEntity.status(404).body("User not found ❌");
     }
 
-    // ✅ Log data (for now)
-    System.out.println("New Registration:");
-    System.out.println("Student: " + studentName);
-    System.out.println("Age: " + age);
-    System.out.println("Parent: " + parentName);
-    System.out.println("Phone: " + phone);
-    System.out.println("Email: " + email);
-    System.out.println("Level: " + level);
-    System.out.println("Batch: " + batch);
-    System.out.println("Has Chess Set: " + hasChessSet);
-    System.out.println("Needs Premium Set: " + needsPremiumChessSet);
+    repository.deleteById(id);
 
-    // ✅ Response
-    Map<String, String> response = new HashMap<>();
-    response.put("message", "Registration successful 🚀");
-    response.put("studentName", studentName);
-
-    return ResponseEntity.ok(response);
+    return ResponseEntity.ok("Deleted successfully ✅");
 }
 
 
