@@ -1,0 +1,5 @@
+com\chessiq\controller\RegistrationController.class
+com\chessiq\service\RegistrationService.class
+com\chessiq\ChessiqApplication.class
+com\chessiq\repository\RegistrationRepository.class
+com\chessiq\model\Registration.class
